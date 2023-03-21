@@ -1,5 +1,43 @@
 const express = require('express');
+//const connection = require('express-myconnection');
 const routes = express.Router();
+const app = express();
+
+//Buscador
+
+routes.get('/buscar', (req, res) => {
+  //res.send('holis');
+
+  const busqueda = req.query;
+  const query = `SELECT * FROM productos WHERE nombre_producto LIKE 'Procesador'`;
+
+  req.getConnection((err, conn) => {
+    if (err) return res.send(err);
+
+    conn.query(query, (err, rows) => {
+      if (err) return res.send(err);
+
+      res.json(rows);
+    });
+  });
+  // connection.query(query, (error, results) => {
+  //   if (error) throw error;
+  //   res.json(results);
+  // });
+});
+
+/*routes.get('/buscar', (req, res) => {
+  const busqueda = req.query.busqueda;
+  const query = `SELECT * FROM productos WHERE nombre_producto LIKE '%${busqueda}%' OR descripcion LIKE '%${busqueda}%`;
+  express.query(query, (error, res) => {
+    if (error) {
+      console.error('Error al realizar la búsqueda', error);
+      res.status(500).send('Error al realizar la búsqueda');
+    } else {
+      res.json(res);
+    }
+  });
+}); */
 
 //Get
 
